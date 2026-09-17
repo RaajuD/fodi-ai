@@ -1,0 +1,17 @@
+{
+    "metadata": {
+        "project": "Fodi AI Ecosystem",
+        "base_target": "Ramamurthy Nagar, Bangalore",
+        "captain": "Linga Raju (4.3K Community)"
+    },
+    "fodi_boat_data": {
+        "phase": "Village Relocation Phase",
+        "mission_status": "Hunt Paused",
+        "tasks": [
+            {"id": 1, "text": "Move to Ramamurthy Nagar — this week", "done": false},
+            {"id": 2, "text": "Lock PG with stable power + internet", "done": false},
+            {"id": 3, "text": "GitHub Pages source saved to root path", "done": true},
+            {"id": 4, "text": "Setup Fodi Gemini AI Gem custom configuration prompt", "done": false}
+        ]
+    }
+}
