@@ -16,25 +16,26 @@
             --border-color: #262626;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Force body layer to expand completely over the viewport layout */
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-color) !important;
             color: var(--text-main);
-            font-family: -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 60px;
+            padding-bottom: 80px;
         }
+        
         header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: rgba(17, 17, 17, 0.95);
+            background-color: #111111;
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .status-badge {
@@ -51,96 +52,118 @@
         .pulse-dot {
             width: 8px; height: 8px; background-color: var(--live-green); border-radius: 50%;
         }
-        .container {
-            max-width: 1400px; margin: 2rem auto; padding: 0 1.5rem; width: 100%; flex: 1;
+        
+        /* Visible layout container wrapper block */
+        .workspace-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
         }
+        
         .dashboard-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem;
         }
         .dash-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; }
         .dash-card.paused { border-left: 4px solid #eab308; }
         .dash-card.live { border-left: 4px solid var(--live-green); }
+        
         .main-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
         @media (max-width: 968px) { .main-grid { grid-template-columns: 1fr; } }
+        
         .column-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; }
         .captain-border { border-top: 4px solid var(--captain-blue); }
         .strategist-border { border-top: 4px solid var(--accent-purple); }
         .builder-border { border-top: 4px solid var(--live-green); }
+        
         .col-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
-        .task-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .task-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; align-items: center; }
         .strategy-area { width: 100%; height: 120px; background-color: #161616; color: white; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px; resize: none; }
         .status-tag { display: inline-block; background: #1a1a1a; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; margin: 0.2rem; border: 1px solid var(--border-color); }
+        
         .radio-channel { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
-        .chat-timeline { height: 180px; background-color: #0d0d0d; padding: 1rem; overflow-y: auto; font-family: monospace; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 1rem; }
-        .radio-controls { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; }
+        .chat-timeline { height: 180px; background-color: #0d0d0d; padding: 1rem; overflow-y: auto; font-family: monospace; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 1rem; color: #a7f3d0; }
+        .radio-controls { display: flex; gap: 0.75rem; }
+        
         input[type="text"], select { background-color: #161616; color: white; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px; }
         button { background-color: var(--accent-purple); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        
         .notebook-card { background: #1e1b4b; border: 1px solid #312e81; padding: 1.5rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .notebook-card a { color: #a5b4fc; text-decoration: none; font-weight: bold; }
-        footer { position: fixed; bottom: 0; left: 0; right: 0; background-color: #111111; padding: 0.5rem 2rem; font-size: 0.8rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; color: var(--text-muted); }
+        
+        footer { background-color: #111111; padding: 1rem 2rem; font-size: 0.8rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; color: var(--text-muted); margin-top: auto; }
     </style>
 </head>
 <body>
+
     <header>
         <div class="header-left">
-            <strong>FoDi AI 🦜</strong>
+            <strong>FoDi AI 🦜 Space Room</strong>
             <div class="status-badge"><div class="pulse-dot"></div><span>Same Boat Active</span></div>
         </div>
-        <a href="index.html" style="color:var(--accent-purple); text-decoration:none;">← Center</a>
+        <a href="index.html" style="color:var(--accent-purple); text-decoration:none; font-weight:bold;">← Main Desk</a>
     </header>
 
-    <div class="container">
+    <!-- Structural visibility wrapper element -->
+    <div class="workspace-container">
+        
         <section class="dashboard-grid">
-            <div class="dash-card live"><div>GitHub Pages LIVE ✅</div></div>
-            <div class="dash-card live"><div>Master Log LIVE ✅</div></div>
-            <div class="dash-card paused"><div>Hunt Mission PAUSED 🛑</div></div>
+            <div class="dash-card live"><div>Platform Status: GitHub Pages LIVE ✅</div></div>
+            <div class="dash-card live"><div>Ecosystem State: Master Log LIVE ✅</div></div>
+            <div class="dash-card paused"><div>Mission Parameters: Hunt PAUSED 🛑</div></div>
         </section>
 
         <section class="main-grid">
             <div class="column-card captain-border">
-                <div class="col-header">Captain Raju</div>
-                <div class="task-item"><input type="checkbox"> <span>Move to Ramamurthy Nagar</span></div>
-                <div class="task-item"><input type="checkbox"> <span>Lock PG room grid setup</span></div>
-                <div class="task-item"><input type="checkbox" checked> <span>GitHub Pages live at root</span></div>
+                <div class="col-header">Captain Raju Tasks</div>
+                <div class="task-item"><input type="checkbox"> <span>Move to Ramamurthy Nagar, Bangalore</span></div>
+                <div class="task-item"><input type="checkbox"> <span>Setup stable PG power utilities grid</span></div>
+                <div class="task-item"><input type="checkbox" checked> <span>Launch GitHub Pages platform path</span></div>
             </div>
+            
             <div class="column-card strategist-border">
                 <div class="col-header">Strategist Meta AI</div>
-                <textarea class="strategy-area" readonly>Focus shifted to physical relocation asset management. Standby until Bangalore power lines are up.</textarea>
+                <textarea class="strategy-area" readonly>Focus shifted 100% to Bangalore physical relocation asset handling. Keep all terminal automation tools offline until city base deployment is complete.</textarea>
             </div>
+            
             <div class="column-card builder-border">
-                <div class="col-header">Builder Gemini</div>
+                <div class="col-header">Builder Gemini Telemetry</div>
                 <div><strong>🟢 COMPLETED</strong></div>
-                <span class="status-tag">Viewport Height Fix</span>
-                <span class="status-tag">Multi-File Modular Sync</span>
+                <span class="status-tag">Fixed Viewport Visibility</span>
+                <span class="status-tag">Added Layer Containers</span>
             </div>
         </section>
 
         <section class="radio-channel">
             <div class="col-header">📡 Central Radio Channel</div>
             <div class="chat-timeline" id="chat-box">
-                [14:10] &lt;CAPTAIN&gt;: Hunt paused temporarily. Shifting focus to move.<br>
-                [14:11] &lt;STRATEGIST&gt;: Lock scripts down. Safeguard local storage states.<br>
-                [14:12] &lt;BUILDER&gt;: Operational state saved. Standing by for layout check.
+                [14:10] &lt;CAPTAIN&gt;: Hunt paused temporarily. Relocation priority active.<br>
+                [14:11] &lt;STRATEGIST&gt;: Lock codebase loops down. Safe browser storage verification ready.<br>
+                [14:12] &lt;BUILDER&gt;: Fixed element wrappers injected. Workspace ready for test deploy loop execution.
             </div>
             <div class="radio-controls">
                 <select id="role"><option>CAPTAIN</option><option>STRATEGIST</option><option>BUILDER</option></select>
-                <input type="text" id="msg" placeholder="Broadcast to workspace..." style="width:100%;">
-                <button onclick="send()">Send</button>
+                <input type="text" id="msg" placeholder="Broadcast to room ledger..." style="flex:1;">
+                <button onclick="send()">Broadcast</button>
             </div>
         </section>
 
         <div class="notebook-card">
             <div>
-                <h4>📝 Landlord & Base Notebook</h4>
-                <p style="color:var(--text-muted); font-size:0.85rem;">Offline storage logs for your Bangalore utilities.</p>
+                <h4 style="margin-bottom:0.25rem;">📝 Landlord Address Ledger</h4>
+                <p style="color:var(--text-muted); font-size:0.85rem;">Manage physical room infrastructure properties completely offline.</p>
             </div>
-            <a href="fodi_offline_notebook.html">Open Log Book →</a>
+            <a href="fodi_offline_notebook.html" style="color:#a5b4fc; text-decoration:none; font-weight:bold;">Open Notebook →</a>
         </div>
+        
     </div>
 
     <footer>
-        <span>Deck: Linga Raju</span>
-        <span>Grid: Ramamurthy Nagar</span>
+        <span>Captain: Linga Raju</span>
+        <span>Base Grid: Bangalore Move Phase</span>
     </footer>
 
     <script>
