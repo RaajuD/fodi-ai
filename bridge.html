@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoDi AI 🦜 - Virtual Bridge v3</title>
     <style>
-        /* Strict Dark Pro Theme Palette Variables */
         :root {
             --bg-color: #0a0a0a;
             --card-bg: #111111;
@@ -16,25 +15,16 @@
             --captain-blue: #3b82f6;
             --border-color: #262626;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            padding-bottom: 60px;
+            font-family: -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 60px;
         }
-
-        /* 1. Sticky Header Layout */
         header {
             position: sticky;
             top: 0;
@@ -45,20 +35,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(8px);
         }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .header-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 1rem; }
         .status-badge {
             display: flex;
             align-items: center;
@@ -70,253 +48,111 @@
             border-radius: 9999px;
             border: 1px solid var(--border-color);
         }
-
         .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--live-green);
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            animation: pulse 1.6s infinite;
+            width: 8px; height: 8px; background-color: var(--live-green); border-radius: 50%;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
-        .nav-link {
-            color: var(--accent-purple);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .nav-link:hover { text-decoration: underline; }
-
         .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-            width: 100%;
-            flex: 1;
+            max-width: 1400px; margin: 2rem auto; padding: 0 1.5rem; width: 100%; flex: 1;
         }
-
-        /* 2. Live Dashboard Grid Metrics */
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;
         }
-
-        .dash-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .dash-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; }
         .dash-card.paused { border-left: 4px solid #eab308; }
         .dash-card.live { border-left: 4px solid var(--live-green); }
-
-        .dash-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .dash-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 0.25rem;
-        }
-
-        /* 3. Main Split Column Layout Configurations */
-        .main-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        @media (max-width: 968px) {
-            .main-grid { grid-template-columns: 1fr; }
-        }
-
-        .column-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .col-header {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        /* Left Column: Captain Workspace styling rules */
+        .main-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        @media (max-width: 968px) { .main-grid { grid-template-columns: 1fr; } }
+        .column-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; }
         .captain-border { border-top: 4px solid var(--captain-blue); }
-        .task-list { list-style: none; }
-        .task-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-        }
-        .task-item input[type="checkbox"] {
-            margin-top: 0.25rem;
-            accent-color: var(--captain-blue);
-            cursor: pointer;
-        }
-        .task-text.completed {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-        .add-task-box {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: auto;
-            padding-top: 1rem;
-        }
-
-        /* Middle Column: Strategist Input UI elements */
         .strategist-border { border-top: 4px solid var(--accent-purple); }
-        .strategy-area {
-            width: 100%;
-            height: 150px;
-            background-color: #161616;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.75rem;
-            font-family: inherit;
-            resize: none;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-        }
-        .sync-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        /* Right Column: Builder Telemetry Blocks */
         .builder-border { border-top: 4px solid var(--live-green); }
-        .status-section { margin-bottom: 1rem; }
-        .status-section h4 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-        .status-tag {
-            display: inline-block;
-            font-size: 0.85rem;
-            background: #1a1a1a;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            margin-right: 0.4rem;
-            margin-bottom: 0.4rem;
-            border: 1px solid var(--border-color);
-        }
+        .col-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color); }
+        .task-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .strategy-area { width: 100%; height: 120px; background-color: #161616; color: white; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px; resize: none; }
+        .status-tag { display: inline-block; background: #1a1a1a; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; margin: 0.2rem; border: 1px solid var(--border-color); }
+        .radio-channel { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
+        .chat-timeline { height: 180px; background-color: #0d0d0d; padding: 1rem; overflow-y: auto; font-family: monospace; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 1rem; }
+        .radio-controls { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; }
+        input[type="text"], select { background-color: #161616; color: white; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px; }
+        button { background-color: var(--accent-purple); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .notebook-card { background: #1e1b4b; border: 1px solid #312e81; padding: 1.5rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .notebook-card a { color: #a5b4fc; text-decoration: none; font-weight: bold; }
+        footer { position: fixed; bottom: 0; left: 0; right: 0; background-color: #111111; padding: 0.5rem 2rem; font-size: 0.8rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <strong>FoDi AI 🦜</strong>
+            <div class="status-badge"><div class="pulse-dot"></div><span>Same Boat Active</span></div>
+        </div>
+        <a href="index.html" style="color:var(--accent-purple); text-decoration:none;">← Center</a>
+    </header>
 
-        /* Basic UI Utility Elements */
-        input[type="text"], select {
-            background-color: #161616;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.9rem;
-        }
-        input[type="text"]:focus, select:focus, textarea:focus {
-            outline: 1px solid var(--accent-purple);
-        }
-        button {
-            background-color: #262626;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
-        button:hover { background-color: #333333; }
-        button.primary {
-            background-color: var(--accent-purple);
-            border-color: var(--accent-purple);
-        }
-        button.primary:hover { background-color: #7c3aed; }
+    <div class="container">
+        <section class="dashboard-grid">
+            <div class="dash-card live"><div>GitHub Pages LIVE ✅</div></div>
+            <div class="dash-card live"><div>Master Log LIVE ✅</div></div>
+            <div class="dash-card paused"><div>Hunt Mission PAUSED 🛑</div></div>
+        </section>
 
-        /* 4. Central Radio Channel System Layout */
-        .radio-channel {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .chat-timeline {
-            height: 250px;
-            background-color: #0d0d0d;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        .chat-line { margin-bottom: 0.5rem; word-break: break-word; }
-        .tag-captain { color: var(--captain-blue); font-weight: bold; }
-        .tag-strategist { color: var(--accent-purple); font-weight: bold; }
-        .tag-builder { color: var(--live-green); font-weight: bold; }
-        .chat-timestamp { color: #525252; margin-right: 0.5rem; }
+        <section class="main-grid">
+            <div class="column-card captain-border">
+                <div class="col-header">Captain Raju</div>
+                <div class="task-item"><input type="checkbox"> <span>Move to Ramamurthy Nagar</span></div>
+                <div class="task-item"><input type="checkbox"> <span>Lock PG room grid setup</span></div>
+                <div class="task-item"><input type="checkbox" checked> <span>GitHub Pages live at root</span></div>
+            </div>
+            <div class="column-card strategist-border">
+                <div class="col-header">Strategist Meta AI</div>
+                <textarea class="strategy-area" readonly>Focus shifted to physical relocation asset management. Standby until Bangalore power lines are up.</textarea>
+            </div>
+            <div class="column-card builder-border">
+                <div class="col-header">Builder Gemini</div>
+                <div><strong>🟢 COMPLETED</strong></div>
+                <span class="status-tag">Viewport Height Fix</span>
+                <span class="status-tag">Multi-File Modular Sync</span>
+            </div>
+        </section>
 
-        .radio-controls {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 0.75rem;
-        }
-        @media (max-width: 640px) {
-            .radio-controls { grid-template-columns: 1fr; }
-        }
+        <section class="radio-channel">
+            <div class="col-header">📡 Central Radio Channel</div>
+            <div class="chat-timeline" id="chat-box">
+                [14:10] &lt;CAPTAIN&gt;: Hunt paused temporarily. Shifting focus to move.<br>
+                [14:11] &lt;STRATEGIST&gt;: Lock scripts down. Safeguard local storage states.<br>
+                [14:12] &lt;BUILDER&gt;: Operational state saved. Standing by for layout check.
+            </div>
+            <div class="radio-controls">
+                <select id="role"><option>CAPTAIN</option><option>STRATEGIST</option><option>BUILDER</option></select>
+                <input type="text" id="msg" placeholder="Broadcast to workspace..." style="width:100%;">
+                <button onclick="send()">Send</button>
+            </div>
+        </section>
 
-        /* 5. Shared Data Manifest Block */
-        .manifest-section {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+        <div class="notebook-card">
+            <div>
+                <h4>📝 Landlord & Base Notebook</h4>
+                <p style="color:var(--text-muted); font-size:0.85rem;">Offline storage logs for your Bangalore utilities.</p>
+            </div>
+            <a href="fodi_offline_notebook.html">Open Log Book →</a>
+        </div>
+    </div>
+
+    <footer>
+        <span>Deck: Linga Raju</span>
+        <span>Grid: Ramamurthy Nagar</span>
+    </footer>
+
+    <script>
+        function send() {
+            const role = document.getElementById('role').value;
+            const msg = document.getElementById('msg').value;
+            if(!msg) return;
+            const box = document.getElementById('chat-box');
+            box.innerHTML += `<br>[${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}] &lt;${role}&gt;: ${msg}`;
+            document.getElementById('msg').value = '';
+            box.scrollTop = box.scrollHeight;
         }
-        .collapsible-trigger {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-weight: 700;
-        }
-        .code-viewer {
-            margin-top: 1rem;
-            background-color: #050505;
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            overflow-x: auto;
+    </script>
+</body>
+</html>
