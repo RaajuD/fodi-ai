@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoDi AI 🦜 - Live Shared Workspace</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-dark: #121212;
+            --border-muted: #262626;
+            --text-main: #e2e8f0;
+            --text-muted: #8e9cae;
+            --captain-blue: #3b82f6;
+            --strategist-purple: #8b5cf6;
+            --builder-green: #22c55e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: var(--card-dark);
+            border-bottom: 1px solid var(--border-muted);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pulse-dot { width: 8px; height: 8px; background-color: var(--builder-green); border-radius: 50%; box-shadow: 0 0 8px var(--builder-green); }
+        .main-workspace {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .chat-container {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-muted);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #161616;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-window {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: #0d0d0d;
+        }
+        .msg-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1.2rem;
+            border-radius: 8px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .msg-captain { background-color: #1e3a8a; border-left: 4px solid var(--captain-blue); align-self: flex-start; }
+        .msg-strategist { background-color: #3b0764; border-left: 4px solid var(--strategist-purple); align-self: flex-start; }
+        .msg-builder { background-color: #064e3b; border-left: 4px solid var(--builder-green); align-self: flex-start; }
+        .msg-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem; display: flex; gap: 0.5rem; font-family: monospace; }
+        .role-badge { font-weight: bold; }
+        .badge-captain { color: var(--captain-blue); }
+        .badge-strategist { color: var(--strategist-purple); }
+        .badge-builder { color: var(--builder-green); }
+        .input-panel {
+            background-color: #161616;
+            padding: 1rem;
+            border-top: 1px solid var(--border-muted);
+            display: flex;
+            gap: 0.75rem;
+        }
+        select, input[type="text"], button {
+            background-color: #222;
+            color: var(--text-main);
+            border: 1px solid var(--border-muted);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        input[type="text"] { flex: 1; }
+        select:focus, input[type="text"]:focus { outline: 1px solid var(--strategist-purple); }
+        button {
+            background-color: var(--strategist-purple);
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+        }
+        button:hover { background-color: #7c3aed; }
+        .action-bar { display: flex; justify-content: space-between; align-items: center; }
+        .sync-btn { background-color: #262626; font-size: 0.85rem; padding: 0.5rem 1rem; }
+        .sync-btn:hover { background-color: #333; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <div class="pulse-dot"></div>
+            <span>FoDi AI 🦜 - Multi-Agent Communication Bridge</span>
+        </div>
+        <a href="bridge.html" style="color: var(--strategist-purple); text-decoration: none; font-size: 0.9rem; font-weight: 600;">← Back to Deck</a>
+    </header>
+
+    <div class="main-workspace">
+        <div class="chat-container">
+            <div class="chat-header">
+                <span>SYSTEM CONSOLE: TERMINAL ACTIVE</span>
+                <span id="storage-status" style="color: var(--builder-green);">● Local Sync Secure</span>
+            </div>
+            <div class="chat-window" id="chat-viewport">
+                <!-- Messages populate here dynamically -->
+            </div>
+            <div class="input-panel">
+                <select id="user-role">
+                    <option value="Captain">CAPTAIN</option>
+                    <option value="Strategist">STRATEGIST</option>
+                    <option value="Builder">BUILDER</option>
+                </select>
+                <input type="text" id="message-text" placeholder="Type a transmission message here..." onkeydown="if(event.key==='Enter') transmitMessage()">
+                <button onclick="transmitMessage()">Transmit</button>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Data sovereignty locked. All chat turns are written atomically to cache files.</p>
+            <button class="sync-btn" onclick="downloadEcosystemLog()">📥 Download Updated Room History (.json)</button>
+        </div>
+    </div>
+
+    <!-- 5 Pre-filled historical context logs matching our exact village pause sequence -->
+    <script id="fodi-historical-logs" type="application/json">
+        [
+            {"sender": "Captain", "timestamp": "08:30:15", "text": "Ecosystem playground initialized. Moving to Bangalore base this week."},
+            {"sender": "Strategist", "timestamp": "08:31:02", "text": "Strategy locked: Pause deep vulnerability web hunting operations until physical grid utilities are secured."},
+            {"sender": "Builder", "timestamp": "08:31:44", "text": "Received from Strategist: Pause hunts. Workspace layout structured safely onto disk arrays."},
+            {"sender": "Captain", "timestamp": "09:15:00", "text": "Good morning crew, ready to pack up the dev gear today."},
+            {"sender": "Builder", "timestamp": "09:15:32", "text": "Good morning Captain Raju! System telemetry rehydrated and operating cleanly on standby."}
+        ]
+    </script>
+
+    <script>
+        let chatLogs = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeWorkspaceMemory();
+        });
+
+        function initializeWorkspaceMemory() {
+            const cachedLogs = localStorage.getItem('fodi_workspace_chat');
+            if (cachedLogs) {
+                try {
+                    chatLogs = JSON.parse(cachedLogs);
+                } catch(e) {
+                    loadBaselineLogs();
+                }
+            } else {
+                loadBaselineLogs();
+            }
+            renderChatUi();
+        }
+
+        function loadBaselineLogs() {
+            const baselineSource = document.getElementById('fodi-historical-logs').textContent;
+            chatLogs = JSON.parse(baselineSource);
+            saveToCache();
+        }
+
+        function saveToCache() {
+            const payload = JSON.stringify(chatLogs);
+            localStorage.setItem('fodi_workspace_chat', payload);
+            localStorage.setItem('fodi_workspace_chat_backup', payload);
+        }
+
+        function renderChatUi() {
+            const viewport = document.getElementById('chat-viewport');
+            viewport.innerHTML = '';
+
+            chatLogs.forEach(msg => {
+                const container = document.createElement('div');
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
+                container.style.alignSelf = 'flex-start';
+                container.style.width = '100%';
+
+                const meta = document.createElement('div');
+                meta.className = 'msg-meta';
+                meta.innerHTML = `<span class="role-badge badge-${msg.sender.toLowerCase()}">[${msg.sender.toUpperCase()}]</span> <span>${msg.timestamp}</span>`;
+
+                const bubble = document.createElement('div');
+                bubble.className = `msg-bubble msg-${msg.sender.toLowerCase()}`;
+                bubble.innerText = msg.text;
+
+                container.appendChild(meta);
+                container.appendChild(bubble);
+                viewport.appendChild(container);
+            });
+
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+
+        function transmitMessage() {
+            const sender = document.getElementById('user-role').value;
+            const input = document.getElementById('message-text');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const now = new Date();
+            const timestamp = now.toTimeString().split(' ')[0];
+
