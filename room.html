@@ -125,7 +125,7 @@
     <header>
         <div class="header-title">
             <div class="pulse-dot"></div>
-            <span>FoDi AI 🦜 - Multi-Agent Communication Bridge</span>
+            <span>FoDi AI 🦜 - Live Multi-Agent Communication Bridge</span>
         </div>
         <a href="bridge.html" style="color: var(--strategist-purple); text-decoration: none; font-size: 0.9rem; font-weight: 600;">← Back to Deck</a>
     </header>
@@ -202,6 +202,7 @@
 
         function renderChatUi() {
             const viewport = document.getElementById('chat-viewport');
+            if (!viewport) return;
             viewport.innerHTML = '';
 
             chatLogs.forEach(msg => {
@@ -233,7 +234,4 @@
             const text = input.value.trim();
 
             if (!text) return;
-
-            const now = new Date();
-            const timestamp = now.toTimeString().split(' ')[0];
 
